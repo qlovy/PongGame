@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Animation without processingJS</title>
+        <meta charset="utf-8">
+        <script src="MyPongGame.js" defer></script>
+        
+        <!--Creepster-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
+
+        <!--Roboto-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+        
+    </head>
+    <body onkeydown="KeyPressed(event)"><!--Appelle la fonction quand on appuie sur une touche dans le body-->
+        <!--Titre-->
+        <h1>Le jeu de pong</h1>
+        <!--Canvas jeu de pong-->
+        <canvas class="canvas">
+            <p>A ball who rebonds between two rectangles with a great sky and stars</p>
+        </canvas>
+        <!--Canvas score-->
+        <canvas class="ScoreCanvas">
+            <p>The score of the game</p>
+        </canvas>
+        <!--Bouton start-->
+        <button type="button"id="StartButton"></button>
+        <!--Bouton stop-->
+        <button type="button" id="StopButton"></button>
+        <!--Bouton relancer le jeu après un game over-->
+        <button type="button" id="RematchButton"></button>
+    </body>
+</html>
