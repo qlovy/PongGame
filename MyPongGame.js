@@ -21,12 +21,14 @@ ctx.fillRect(0, 0, width, height);
 let tolerance = 3.8;//la tolérance pour les valeurs des étoiles(évitent que certaines étoiles soient trop proche).
 let GameOverJ1 = false;//c'est gameover pour le joueur 1
 let GameOverJ2 = false;//c'est gameover pour le joueur 2
+let PointJ1 = false;//le point va pour le joueur 1
+let PointJ2 = false;//le point va pour le joueur 2
 let HowManyXnYModif = 0;//c'est le nombre de fois qu'on a modifié un x ou un y des cordonnées des étoiles.
 let NumbStars = 120;//le nombre d'étoiles
 let KeyIsPress;//la touche qui est pressée.
 let InitiallingGame = false;//installation est prête à démarrer.
 let StoppingGame = false;//arrêt de l'installation
-let RematchingGame = false;//relance la game après un game over
+let RematchingGame = false;//relance une partie après un game over
 let ScoreJ1 = 0;//le score de J1
 let ScoreJ2 = 0;//le score de J2
 
@@ -103,11 +105,11 @@ Ball.prototype.drawB = function() {
     //Si la balle touche les lignes de fonds
 
     if (this.x >= width - this.ray) {//GameOver J2 est activé si la balle atteint la ligne de fond du joueur 2.
-        GameOverJ2 = true;
+        PointJ1 = true;
     }
 
     if (this.x <= 0 + this.ray) {//GameOver J1 est activé si la balle atteint la ligne de fond du jouer 1.
-        GameOverJ1 = true;
+        PointJ2 = true;
     }
 
     this.x = this.x + this.VelocityX;//on ajoute la valeur de la vitesse à la cordonnée x, donne l'effet d'avancer ou de reculer.
@@ -260,11 +262,11 @@ ScoreCanvas.style.left = 20 + 'px';
 
 function Score() {
 
-    if(GameOverJ1 === true) {
+    if(PointJ2 === true) {
         ScoreJ2++;
     }
 
-    if(GameOverJ2 === true) {
+    if(PointJ1 === true) {
         ScoreJ1++;
     }
     //Score joueur 1
@@ -382,14 +384,14 @@ StartButton.addEventListener('click', StartingGame);
 //si on clique sur le bouton Stop, lance la fonction StopGame.
 StopButton.addEventListener('click', StopGame);
 
-//si on clique sur le bouton rematch, lance la fonction RematchGame.
+//si on clique sur le bouton rematch, lance la fonction RematchFunc.
 RematchButton.addEventListener('click', RematchGame);
 
 
 /*FONCTION REMATCH*/
 
 
-//fonction qui permet de lancer un nouveau round après un game over.
+//fonction qui permet de lancer une nouvelle partie après un game over.
 function RematchFunc () {
     //si la variable est activée
     if (RematchingGame === true) {
@@ -400,9 +402,26 @@ function RematchFunc () {
         setTimeout(function () {
             GameOverJ1 = false;//reset la variable game over J1
             GameOverJ2 = false;//reset la variable game over J2
-        }, 400);
-    }else if (ball.x === 400 && ball.y === 150) {
+        }, 1000);
+    }else if (ball.x === 400 && ball.y === 150) {//reset la valeur quand la balle se trouve en position initiale.
         RematchingGame = false;
+    }
+}
+
+
+/*FONCTION RESTARTAFTERPOINT*/
+
+
+function RestartAfterPoint () {
+    
+    if (PointJ1 === true || PointJ2 === true) {
+        //On met la balle à ses cordonnées de base.
+        ball.x = 400;
+        ball.y = 150;
+        setTimeout(function () {//On reset PointJ1 et PointJ2 après 300 ms.
+            PointJ1 = false;
+            PointJ2 = false;
+        }, 300);
     }
 }
 
@@ -446,9 +465,10 @@ draw = function(){
     rectJ1.drawR();
     rectJ2.drawR();
     RematchFunc();
+    RestartAfterPoint();
     GameIsOver();
     Score();
-    if (GameOverJ1 === false && GameOverJ2 === false && InitiallingGame === true && StoppingGame !== true) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé.
+    if (GameOverJ1 === false && GameOverJ2 === false && InitiallingGame === true && StoppingGame !== true && PointJ1 === false && PointJ2 === false) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé.
         ball.drawB();
     }
 }
