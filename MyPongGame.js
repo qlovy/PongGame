@@ -15,7 +15,7 @@ ctx.fillStyle = 'black';
 ctx.fillRect(0, 0, width, height);
 
 
-/*LES VARIAVLES SPECIFIQUES*/
+/*LES VARIABLES SPECIFIQUES*/
 
 
 let tolerance = 3.8;//la tolérance pour les valeurs des étoiles(évitent que certaines étoiles soient trop proche).
@@ -23,7 +23,13 @@ var GameOverJ1 = false;//c'est gameover pour le joueur 1
 var GameOverJ2 = false;//c'est gameover pour le joueur 2
 var HowManyXnYModif = 0;//c'est le nombre de fois qu'on a modifier un x ou un y des cordonnées des étoiles.
 var NumbStars = 120;//le nombre d'étoiles
-var KeyIsPress;
+var KeyIsPress;//la touche qui est pressée.
+var InitiallingGame = false;//installation est prête à démarrer.
+var StoppingGame = false;//arrêt de l'installation
+var RematchingGame = false;//relance la game après un game over
+var ScoreJ1 = 0;//le score de J1
+var ScoreJ2 = 0;//le score de J2
+
 
 /*LES FONCTIONS SPECIFIQUES*/
 
@@ -51,7 +57,7 @@ function MaxNumb (number) {
 //fonction qui donne quel touche à été pressée (KeyIsPress).
 function KeyPressed(event) {
     KeyIsPress = event.key;
-    console.log('the key presssed: ' + KeyIsPress);
+    console.log('the key pressed: ' + KeyIsPress);
 }
 
 
@@ -253,9 +259,6 @@ ScoreCanvas.style.top = 410 + 'px';
 ScoreCanvas.style.left = 20 + 'px';
 
 function Score() {
-    //variable score
-    var ScoreJ1 = 0;
-    var ScoreJ2 = 0;
 
     if(GameOverJ1 === true) {
         ScoreJ2++;
@@ -290,11 +293,12 @@ function Score() {
 
 
 function GameIsOver () {//ce qui s'affiche quand la balle touche une des 2 lignes de fonds.
-    
+    //si une des deux variables GameOverJ1 et J2.
     if(GameOverJ1 === true || GameOverJ2 === true) {    
         //fond noir transparent
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fillRect(0, 0, width, height);
+        
         //texte game over
         
         //texte noir rempli
@@ -319,23 +323,88 @@ function GameIsOver () {//ce qui s'affiche quand la balle touche une des 2 ligne
 /*LES DIFFERENTS BOUTONS*/
 
 
+//le panneau de commande
+var ControlPannel = document.getElementById('ControlPannel');
+ControlPannel.style.position = 'absolute';
+ControlPannel.style.top = 80 + 'px';
+ControlPannel.style.left = 890 + 'px';
+ControlPannel.style.width = 250 + 'px';
+ControlPannel.style.height = 300 + 'px';
+ControlPannel.style.backgroundColor = 'grey';
+ControlPannel.style.borderStyle = 'double';
+
 //le bouton start
 var StartButton = document.getElementById('StartButton');
 StartButton.style.position ='absolute';
-StartButton.style.top = 60 + 'px';
+StartButton.style.top = 90 + 'px';
 StartButton.style.left = 900 + 'px';
+StartButton.style.backgroundColor = 'green';
+StartButton.style.color = 'white';
+StartButton.style.fontSize = 40 + 'px';
 
 //le bouton stop
 var StopButton = document.getElementById('StopButton');
 StopButton.style.position ='absolute';
-StopButton.style.top = 100 + 'px';
+StopButton.style.top = 200 + 'px';
 StopButton.style.left = 900 + 'px';
+StopButton.style.backgroundColor = 'red';
+StopButton.style.color = 'white';
+StopButton.style.fontSize = 40 + 'px';
 
 //le bouton de rematch après game over
 var RematchButton = document.getElementById('RematchButton');
 RematchButton.style.position ='absolute';
-RematchButton.style.top = 140 + 'px';
+RematchButton.style.top = 310 + 'px';
 RematchButton.style.left = 900 + 'px';
+RematchButton.style.backgroundColor = 'blue';
+RematchButton.style.color = 'white';
+RematchButton.style.fontSize = 40 + 'px';
+
+//fonction qui modifie la valeur de la variable
+function StartingGame () {
+    InitiallingGame = true;//cette variable lance l'installation
+    StoppingGame = false;
+}
+
+//fonction qui modifie la valeur de la variable
+function StopGame () {
+    StoppingGame = true;//cette variable arrête l'installation
+}
+
+//fonction qui modifie la valeur de la variable
+function RematchGame () {
+    RematchingGame = true;//cette variable relance le jeu après un game over.
+}
+
+//si on clique sur le bouton Start, lance la fonction StartingGame.
+StartButton.addEventListener('click', StartingGame);
+
+//si on clique sur le bouton Stop, lance la fonction StopGame.
+StopButton.addEventListener('click', StopGame);
+
+//si on clique sur le bouton rematch, lance la fonction RematchGame.
+RematchButton.addEventListener('click', RematchGame);
+
+
+/*FONCTION REMATCH*/
+
+
+//fonction qui permet de lancer un nouveau round après un game over.
+function RematchFunc () {
+    //si la variable est activée
+    if (RematchingGame === true) {
+        //on reviens à la position de base
+        ball.x = 400;
+        ball.y = 150;
+        //la fonction s'éxecute après 1000 millisecondes
+        setTimeout(function () {
+            GameOverJ1 = false;//reset la variable game over J1
+            GameOverJ2 = false;//reset la variable game over J2
+        }, 400);
+    }else if (ball.x === 400 && ball.y === 150) {
+        RematchingGame = false;
+    }
+}
 
 
 /*CREATION VARIABLE AVEC LES OBJETS*/
@@ -372,14 +441,15 @@ var field = new Field();
 
 // fonction excécute les autres fonctions
 draw = function(){
+    window.requestAnimationFrame(draw);
     field.draw();
     rectJ1.drawR();
     rectJ2.drawR();
-    ball.drawB();
+    RematchFunc();
     GameIsOver();
     Score();
-    if (GameOverJ1 === false && GameOverJ2 === false) {//arrête le jeu si un des joueurs est en game over.
-        window.requestAnimationFrame(draw);
+    if (GameOverJ1 === false && GameOverJ2 === false && InitiallingGame === true && StoppingGame !== true) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé.
+        ball.drawB();
     }
 }
 
