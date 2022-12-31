@@ -1,10 +1,10 @@
-//ce document à le même but que sketch_Processing.js mais simplement sans la technologie processing.js
+//ce document a le même but que sketch_Processing.js mais simplement sans la technologie processing.js
 
 
 /*LE CANVAS*/
 
 
-//PS: si question sur ce genre de chose consulter le doc canvas de le drive programmation>vscodeproject>canvas.
+//PS: si question sur ce genre de chose consulter le doc canvas dans le drive programmation>vscodeproject>canvas.
 const canvas = document.querySelector(".canvas");
 const width = canvas.width = 800;
 const height = canvas.height = 300;
@@ -19,16 +19,16 @@ ctx.fillRect(0, 0, width, height);
 
 
 let tolerance = 3.8;//la tolérance pour les valeurs des étoiles(évitent que certaines étoiles soient trop proche).
-var GameOverJ1 = false;//c'est gameover pour le joueur 1
-var GameOverJ2 = false;//c'est gameover pour le joueur 2
-var HowManyXnYModif = 0;//c'est le nombre de fois qu'on a modifier un x ou un y des cordonnées des étoiles.
-var NumbStars = 120;//le nombre d'étoiles
-var KeyIsPress;//la touche qui est pressée.
-var InitiallingGame = false;//installation est prête à démarrer.
-var StoppingGame = false;//arrêt de l'installation
-var RematchingGame = false;//relance la game après un game over
-var ScoreJ1 = 0;//le score de J1
-var ScoreJ2 = 0;//le score de J2
+let GameOverJ1 = false;//c'est gameover pour le joueur 1
+let GameOverJ2 = false;//c'est gameover pour le joueur 2
+let HowManyXnYModif = 0;//c'est le nombre de fois qu'on a modifié un x ou un y des cordonnées des étoiles.
+let NumbStars = 120;//le nombre d'étoiles
+let KeyIsPress;//la touche qui est pressée.
+let InitiallingGame = false;//installation est prête à démarrer.
+let StoppingGame = false;//arrêt de l'installation
+let RematchingGame = false;//relance la game après un game over
+let ScoreJ1 = 0;//le score de J1
+let ScoreJ2 = 0;//le score de J2
 
 
 /*LES FONCTIONS SPECIFIQUES*/
@@ -41,20 +41,20 @@ var DegToRad = function(degrees){
 
 // fonction qui créer des valeurs aléatoires entre 2 valeurs
 function getRandomNumb (min, max) {
-    return Math.random() * (max - min) + min;//peut-être égal au min mais sera toujours plus petit que le max.
+    return Math.random() * (max - min) + min;//peut-être égal au min, mais sera toujours plus petit que le max.
 }
 
-//fonction qui donne le nombre le plus bas en fonction du nombre de départ et de la tolérance
+//fonction qui donne le nombre le plus bas en fonction du nombre de départs et de la tolérance
 function MinNumb (number) {
     return number - tolerance;
 }
 
-//fonction qui donne le nombre le plus haut en fonction du nombre de départ et de la tolérance
+//fonction qui donne le nombre le plus haut en fonction du nombre de départs et de la tolérance
 function MaxNumb (number) {
     return number + tolerance;
 }
 
-//fonction qui donne quel touche à été pressée (KeyIsPress).
+//fonction qui donne quelle touche a été pressée (KeyIsPress).
 function KeyPressed(event) {
     KeyIsPress = event.key;
     console.log('the key pressed: ' + KeyIsPress);
@@ -64,8 +64,8 @@ function KeyPressed(event) {
 /*LES OBJETS ET LEURS FONCTIONS*/
 
 
-// Objet balle (config évite d'écrir x, y, width, height, color)
-var Ball = function(config) {
+// Objet balle (config évite d'écrire x, y, width, height, color)
+const Ball = function (config) {
     this.x = config.x;
     this.y = config.y;
     this.ray = config.ray;
@@ -74,7 +74,7 @@ var Ball = function(config) {
     this.color = config.color;
     this.VelocityX = config.VelocityX;
     this.VelocityY = config.VelocityY;
-}
+};
 
 //on ajoute la fonction drawB
 
@@ -119,7 +119,7 @@ Ball.prototype.drawB = function() {
 
 // Objet rectangle 
 
-var Rect = function(config) {
+const Rect = function(config) {
     this.x = config.x;
     this.y = config.y;
     this.widthR1 = config.width || 30;
@@ -170,7 +170,7 @@ Rect.prototype.drawR = function() {
 
 // Objet étoile
 
-var Star = function(x, y){
+const Star = function(x, y){
     this.x = x;
     this.y = y;
 }
@@ -186,12 +186,12 @@ Star.prototype.draw = function(){
 
 // Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y
 
-var Field = function() {
+const Field = function() {
     this.stars = [];//Création tableau
-    var xStars = [];//tableau pour les cordonnées x des étoiles
-    var yStars = [];// tableau pour les cordonnées y des étoiles
+    let xStars = [];//tableau pour les cordonnées x des étoiles
+    let yStars = [];// tableau pour les cordonnées y des étoiles
     
-    for(var i = 0; i < NumbStars; i++){// On insère les objets Star avec leurs cordonnées dans le tableau
+    for(let i = 0; i < NumbStars; i++){// On insère les objets Star avec leurs cordonnées dans le tableau
         xStars.push(getRandomNumb(40, width - 60));//on incrémente des valeurs 120 fois dans un tableau.
         yStars.push(getRandomNumb(15,height - 20));//la même chose
     }
@@ -292,8 +292,8 @@ function Score() {
 /*FONCTION FIN DE PARTIE "GAMEOVER"*/
 
 
-function GameIsOver () {//ce qui s'affiche quand la balle touche une des 2 lignes de fonds.
-    //si une des deux variables GameOverJ1 et J2.
+function GameIsOver () {//Ce qui s'affiche quand la balle touche une des 2 lignes de fonds.
+    //Si une des deux variables GameOverJ1 et J2.
     if(GameOverJ1 === true || GameOverJ2 === true) {    
         //fond noir transparent
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -324,7 +324,7 @@ function GameIsOver () {//ce qui s'affiche quand la balle touche une des 2 ligne
 
 
 //le panneau de commande
-var ControlPannel = document.getElementById('ControlPannel');
+const ControlPannel = document.getElementById('ControlPannel');
 ControlPannel.style.position = 'absolute';
 ControlPannel.style.top = 80 + 'px';
 ControlPannel.style.left = 890 + 'px';
@@ -334,7 +334,7 @@ ControlPannel.style.backgroundColor = 'grey';
 ControlPannel.style.borderStyle = 'double';
 
 //le bouton start
-var StartButton = document.getElementById('StartButton');
+const StartButton = document.getElementById('StartButton');
 StartButton.style.position ='absolute';
 StartButton.style.top = 90 + 'px';
 StartButton.style.left = 900 + 'px';
@@ -343,7 +343,7 @@ StartButton.style.color = 'white';
 StartButton.style.fontSize = 40 + 'px';
 
 //le bouton stop
-var StopButton = document.getElementById('StopButton');
+const StopButton = document.getElementById('StopButton');
 StopButton.style.position ='absolute';
 StopButton.style.top = 200 + 'px';
 StopButton.style.left = 900 + 'px';
@@ -352,7 +352,7 @@ StopButton.style.color = 'white';
 StopButton.style.fontSize = 40 + 'px';
 
 //le bouton de rematch après game over
-var RematchButton = document.getElementById('RematchButton');
+const RematchButton = document.getElementById('RematchButton');
 RematchButton.style.position ='absolute';
 RematchButton.style.top = 310 + 'px';
 RematchButton.style.left = 900 + 'px';
@@ -393,10 +393,10 @@ RematchButton.addEventListener('click', RematchGame);
 function RematchFunc () {
     //si la variable est activée
     if (RematchingGame === true) {
-        //on reviens à la position de base
+        //on revient à la position de base
         ball.x = 400;
         ball.y = 150;
-        //la fonction s'éxecute après 1000 millisecondes
+        //la fonction s'exécute après 1000 millisecondes
         setTimeout(function () {
             GameOverJ1 = false;//reset la variable game over J1
             GameOverJ2 = false;//reset la variable game over J2
@@ -411,21 +411,21 @@ function RematchFunc () {
 
 
 //rectangle joueur 1
-var rectJ1 = new Rect({
+const rectJ1 = new Rect({
     x: 20,
     y: 100,
     colorR: 'rgb(21, 96, 189)'
 });
 
 //rectangle joueur 2
-var rectJ2 = new Rect({
+const rectJ2 = new Rect({
     x: 750,
     y: 100,
     colorR: 'rgb(187, 11, 11)'
 });
 
 // la balle de tennis 
-var ball = new Ball({
+const ball = new Ball({
     x: 400,
     y: 150,
     ray: 15,
@@ -437,9 +437,9 @@ var ball = new Ball({
 });
 
 // le terrain
-var field = new Field();
+const field = new Field();
 
-// fonction excécute les autres fonctions
+//fonction qui exécute les autres fonctions
 draw = function(){
     window.requestAnimationFrame(draw);
     field.draw();
