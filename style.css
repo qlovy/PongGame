@@ -1,0 +1,16 @@
+/*Document qui gère le style de la page web*/
+
+/*le body*/
+body {
+    background-color: #2980b9;
+}
+
+/*le h1*/
+h1 {
+    color: #72b0d9;
+    font-family: Monserrat, sans-serif;
+    font-size: 50px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 80px;
+}

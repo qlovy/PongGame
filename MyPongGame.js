@@ -4,7 +4,7 @@
 /*LE CANVAS*/
 
 
-//PS: si question sur ce genre de chose consulter le doc canvas dans le drive programmation>vscodeproject>canvas.
+//PS : si question sur ce genre de chose consulter le doc canvas dans le drive programmation>vscodeproject>canvas.
 const canvas = document.querySelector(".canvas");
 const width = canvas.width = 800;
 const height = canvas.height = 300;
@@ -15,14 +15,12 @@ ctx.fillStyle = 'black';
 ctx.fillRect(0, 0, width, height);
 
 
-/*LES VARIABLES SPECIFIQUES*/
+/*LES VARIABLES SPÉCIFIQUES*/
 
 
-let tolerance = 3.8;//la tolérance pour les valeurs des étoiles(évitent que certaines étoiles soient trop proche).
-let GameOverJ1 = false;//c'est gameover pour le joueur 1
-let GameOverJ2 = false;//c'est gameover pour le joueur 2
-let PointJ1 = false;//le point va pour le joueur 1
-let PointJ2 = false;//le point va pour le joueur 2
+let tolerance = 3.8;//la tolérance pour les valeurs des étoiles(évitent que certaines étoiles soient trop proches).
+let GameOverJ1 = false;//c'est game over pour le joueur 1
+let GameOverJ2 = false;//c'est game over pour le joueur 2
 let HowManyXnYModif = 0;//c'est le nombre de fois qu'on a modifié un x ou un y des cordonnées des étoiles.
 let NumbStars = 120;//le nombre d'étoiles
 let KeyIsPress;//la touche qui est pressée.
@@ -31,13 +29,15 @@ let StoppingGame = false;//arrêt de l'installation
 let RematchingGame = false;//relance une partie après un game over
 let ScoreJ1 = 0;//le score de J1
 let ScoreJ2 = 0;//le score de J2
+let Playing = true;//si le jeu est actif.
+let Execute = true;//décide de l'exécution d'une fonction
+let StopVerify = false;//arrête la fonction verifystate.
 
-
-/*LES FONCTIONS SPECIFIQUES*/
+/*LES FONCTIONS SPÉCIFIQUES*/
 
 
 //fonction qui convertit les angles en radiants
-var DegToRad = function(degrees){
+const DegToRad = function(degrees){
     return degrees * Math.PI / 180;
 }
 
@@ -59,7 +59,7 @@ function MaxNumb (number) {
 //fonction qui donne quelle touche a été pressée (KeyIsPress).
 function KeyPressed(event) {
     KeyIsPress = event.key;
-    console.log('the key pressed: ' + KeyIsPress);
+    //console.log('the key pressed: ' + KeyIsPress);
 }
 
 
@@ -95,21 +95,11 @@ Ball.prototype.drawB = function() {
         this.VelocityY = this.VelocityY * (-1);
     }
 
-    //rebond de la balle si elle touche le rectangle du joueur 1 et 2
+    //rebond de la balle si elle touche le rectangle du joueur 1 et 2.
     if ( (this.x <= rectJ1.x + rectJ1.widthR1 + this.ray + 1 && this.x >= rectJ1.x + rectJ1.widthR1 + this.ray - 1) && this.y >= rectJ1.y - this.ray && this.y <= (rectJ1.y + rectJ1.heightR1) - this.ray || ( (this.x <= rectJ2.x - this.ray + 1 && this.x >= rectJ2.x -this.ray - 1) && (this.y >= (rectJ2.y - this.ray) && this.y <= (rectJ2.y + rectJ2.heightR1) - this.ray))) {
-        //si le x de la balle est presque égal au bord droite du J1 et que le y correspond au bord droite de J1. Le même principe pour J2 mais la reférence est le bord gauche.
+        //Si le x de la balle est presque égal au bord droit du J1 et que le y correspond au bord droit de J1. Le même principe pour J2 mais la reference est le bord gauche.
         //le (this.x <= rectJ1.x + rectJ1.widthR1 + this.ray + 0.2 && this.x >= rectJ1.x + rectJ1.widthR1 + this.ray - 0.2) permet d'avoir une sorte de zone de tolérance (min et max), ce qui évite que le x doive être à LA bonne cordonnée pour que la balle rebondisse.
         this.VelocityX = this.VelocityX * (-1);
-    }
-
-    //Si la balle touche les lignes de fonds
-
-    if (this.x >= width - this.ray) {//GameOver J2 est activé si la balle atteint la ligne de fond du joueur 2.
-        PointJ1 = true;
-    }
-
-    if (this.x <= 0 + this.ray) {//GameOver J1 est activé si la balle atteint la ligne de fond du jouer 1.
-        PointJ2 = true;
     }
 
     this.x = this.x + this.VelocityX;//on ajoute la valeur de la vitesse à la cordonnée x, donne l'effet d'avancer ou de reculer.
@@ -132,7 +122,7 @@ const Rect = function(config) {
     this.colorS1 = config.colorS || 'rgb(255, 255, 255)';
     this.colorS2 = config.colorS2 || 'rgb(255, 255, 255)';
     // Couleur Rect (Aire)
-    // colorR doit être écrit lors de la création de l'objet(line 98) et pas colorR1
+    // colorR doit être écrit lors de la création de l'objet (line 98) et pas colorR1
     this.colorR1 = config.colorR;
     this.colorR2 = config.colorR2 || config.colorR;
 }
@@ -141,7 +131,7 @@ const Rect = function(config) {
 
 Rect.prototype.drawR = function() {            
     
-    //rectangle bleu(joueur1) ou rouge(joueur2).
+    //rectangle bleu (joueur1) ou rouge(joueur2).
     ctx.fillStyle = this.colorR1;
     ctx.fillRect(this.x, this.y, this.widthR1, this.heightR1);
 
@@ -153,12 +143,12 @@ Rect.prototype.drawR = function() {
     ctx.strokeStyle = this.colorS2;
     ctx.strokeRect(this.x + 5, this.y + 5, this.widthR2, this.heightR2);
 
-    //les mouvements des rectangles commandés par les touches du calvier.
+    //les mouvements des rectangles commandés par les touches du clavier.
     
     //Pour le joueur 1
     if(KeyIsPress === 'w' && rectJ1.y >= 0) {//si on appuie sur la touche w et que le rectangle n'est pas en haut (y = 0), le rectangle monte.
         rectJ1.y--;
-    }else if (KeyIsPress === 's' && rectJ1.y <= height - rectJ1.heightR1) {//si on appuie sur la touche s et que le rectangle n'est pas en bas (y = 200), le rectangle descend.
+    }else if (KeyIsPress === 's' && rectJ1.y <= height - rectJ1.heightR1) {//si on appuie sur la touche 's' et que le rectangle n'est pas en bas (y = 200), le rectangle descend.
         rectJ1.y++;
     }
 
@@ -186,12 +176,12 @@ Star.prototype.draw = function(){
     ctx.fill();
 }
 
-// Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y
+// Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y.
 
 const Field = function() {
     this.stars = [];//Création tableau
-    let xStars = [];//tableau pour les cordonnées x des étoiles
-    let yStars = [];// tableau pour les cordonnées y des étoiles
+    let xStars = [];//tableau pour les cordonnées 'x' des étoiles
+    let yStars = [];// tableau pour les cordonnées 'y' des étoiles
     
     for(let i = 0; i < NumbStars; i++){// On insère les objets Star avec leurs cordonnées dans le tableau
         xStars.push(getRandomNumb(40, width - 60));//on incrémente des valeurs 120 fois dans un tableau.
@@ -204,9 +194,9 @@ const Field = function() {
                 
         for (let o = 0; o < NumbStars; o++) {//fait varier la valeur comparée.
             
-            if(i !== o) {//vérifie que i n'est pas égale à o.
+            if(i !== o) {//vérifie que i n'est pas égal à o.
 
-                console.log('le i: ' + i + 'le o: ' + o);//le i et le o(pour comprendre)
+                console.log('le i: ' + i + 'le o: ' + o);//le i et le o (pour comprendre)
 
                 if (xStars[i] <= MaxNumb(xStars[o]) &&  xStars[i] >= MinNumb(xStars[o])) {
                     xStars[o] = -200;
@@ -239,21 +229,44 @@ Field.prototype.draw = function(){
     ctx.strokeRect(5, 5, 790, 290);//dimensions du rectangle
     
     // boucle for qui dessine les 100 étoiles qui ont des cordonnées x et y aléatoire 
-    for(i = 0; i < this.stars.length; i++) {
+    for(let i = 0; i < this.stars.length; i++) {
         this.stars[i].draw();
     }
 
-    //PS: Amélioration possible en faisant qu'on puisse modifier les éléments du terrains et qu'il ait de valeurs par défaut.
+    //PS : Amélioration possible en faisant qu'on puisse modifier les éléments du terrain et qu'il ait de valeurs par défaut.
 }
 
 
-/*FONCTION DU SCORE*/
+/*FONCTION VERIFYSTATE*/
 
 
-//variables canvas
+function VerifyState () {//fonction qui vérifie les états de différentes choses
+    
+    //Si la balle touche les lignes de fonds
+    if (ball.x >= width - ball.ray || ball.x <= 0 + ball.ray) {//si la balle touche une des deux lignes de fonds
+        Playing = false;
+        Execute = true;
+    } else {//sinon
+        Playing = true;
+        Execute = true;
+    }
+
+    //Vérifie si la partie est terminée
+    if(ScoreJ1 === 6) {//si le score de joueur 1 est à 6.
+        GameOverJ1 = true;
+    } else if (ScoreJ2 === 6){//même chose pour le joueur 2
+        GameOverJ2 = true;
+    }
+}
+
+
+/*FONCTION POUR LE SCORE*/
+
+
+//définition du canevas
 const ScoreCanvas = document.querySelector('.ScoreCanvas');
 const ScoreWidth = ScoreCanvas.width = 800;
-const ScoreHeight = ScoreCanvas.height = 150;
+const ScoreHeight = ScoreCanvas.height = 200;
 const Sctx = ScoreCanvas.getContext('2d');
 
 ScoreCanvas.style.position = 'absolute';
@@ -262,32 +275,47 @@ ScoreCanvas.style.left = 20 + 'px';
 
 function Score() {
 
-    if(PointJ2 === true) {
-        ScoreJ2++;
+    if (Execute !== false) {//si Execute n'est strictement pas égal à false, le code s'exécute.
+
+        if(ball.x <= 0 + ball.ray) {//si la balle est à gauche
+            ScoreJ2++;
+        }
+
+        if(ball.x >= width - ball.ray) {//si la balle est à droite
+            ScoreJ1++;
+        }
+        //Score joueur 1
+
+        //le rectangle bleu
+        Sctx.fillStyle = 'rgb(7, 58, 118)';
+        Sctx.fillRect(210, 50, 180, height);
+        //le texte
+        Sctx.fillStyle = 'white';
+        Sctx.font = '80px roboto';
+        Sctx.fillText(ScoreJ1, 279, 155);
+
+        //Score joueur 2
+
+        //le rectangle rouge
+        Sctx.fillStyle = 'rgb(110, 0, 0)';
+        Sctx.fillRect(400, 50, 180, height);
+        //le texte
+        Sctx.fillStyle = 'white';
+        Sctx.font = '80px roboto';
+        Sctx.fillText(ScoreJ2, 469, 155);
+
+        Execute = false;
     }
+}
 
-    if(PointJ1 === true) {
-        ScoreJ1++;
-    }
-    //Score joueur 1
-    
-    //le rectangle bleu
-    Sctx.fillStyle = 'rgb(7, 58, 118)';
-    Sctx.fillRect(210, 0, 180, height);
-    //le texte
-    Sctx.fillStyle = 'white';
-    Sctx.font = '80px roboto';
-    Sctx.fillText(ScoreJ1, 279, 105);
 
-    //Score joueur 2
+/*FONCTION RESTARTAFTERPOINT*/
 
-    //le rectangle rouge
-    Sctx.fillStyle = 'rgb(110, 0, 0)';
-    Sctx.fillRect(400, 0, 180, height);
-    //le texte
-    Sctx.fillStyle = 'white';
-    Sctx.font = '80px roboto';
-    Sctx.fillText(ScoreJ2, 469, 105);
+
+function RestartAfterPoint () {
+        //On met la balle à ses cordonnées de base.
+        ball.x = 400;
+        ball.y = 150;
 }
 
 
@@ -322,23 +350,23 @@ function GameIsOver () {//Ce qui s'affiche quand la balle touche une des 2 ligne
 }
 
 
-/*LES DIFFERENTS BOUTONS*/
+/*LES DIFFERENTS BOUTONS ET LE PANNEAU DE COMMANDE*/
 
 
 //le panneau de commande
 const ControlPannel = document.getElementById('ControlPannel');
 ControlPannel.style.position = 'absolute';
-ControlPannel.style.top = 80 + 'px';
+ControlPannel.style.top = 155 + 'px';
 ControlPannel.style.left = 890 + 'px';
 ControlPannel.style.width = 250 + 'px';
-ControlPannel.style.height = 300 + 'px';
-ControlPannel.style.backgroundColor = 'grey';
+ControlPannel.style.height = 295 + 'px';
+ControlPannel.style.backgroundColor = '#07507F';
 ControlPannel.style.borderStyle = 'double';
 
 //le bouton start
 const StartButton = document.getElementById('StartButton');
 StartButton.style.position ='absolute';
-StartButton.style.top = 90 + 'px';
+StartButton.style.top = 168 + 'px';
 StartButton.style.left = 900 + 'px';
 StartButton.style.backgroundColor = 'green';
 StartButton.style.color = 'white';
@@ -347,7 +375,7 @@ StartButton.style.fontSize = 40 + 'px';
 //le bouton stop
 const StopButton = document.getElementById('StopButton');
 StopButton.style.position ='absolute';
-StopButton.style.top = 200 + 'px';
+StopButton.style.top = 278 + 'px';
 StopButton.style.left = 900 + 'px';
 StopButton.style.backgroundColor = 'red';
 StopButton.style.color = 'white';
@@ -356,7 +384,7 @@ StopButton.style.fontSize = 40 + 'px';
 //le bouton de rematch après game over
 const RematchButton = document.getElementById('RematchButton');
 RematchButton.style.position ='absolute';
-RematchButton.style.top = 310 + 'px';
+RematchButton.style.top = 388 + 'px';
 RematchButton.style.left = 900 + 'px';
 RematchButton.style.backgroundColor = 'blue';
 RematchButton.style.color = 'white';
@@ -395,33 +423,30 @@ RematchButton.addEventListener('click', RematchGame);
 function RematchFunc () {
     //si la variable est activée
     if (RematchingGame === true) {
+        //reset les scores des 2 joueurs.
+        if(ScoreJ2 === 6){
+            ScoreJ2 = 0;
+            GameOverJ1 = false;
+        }
+
+        if(ScoreJ1 === 6){
+            ScoreJ1 = 0;
+            GameOverJ2 = false;
+        }
+
         //on revient à la position de base
         ball.x = 400;
         ball.y = 150;
-        //la fonction s'exécute après 1000 millisecondes
-        setTimeout(function () {
-            GameOverJ1 = false;//reset la variable game over J1
-            GameOverJ2 = false;//reset la variable game over J2
-        }, 1000);
-    }else if (ball.x === 400 && ball.y === 150) {//reset la valeur quand la balle se trouve en position initiale.
+
+        //on arrête la fonction qui contrôle les états des variables.
+        StopVerify = true;
+
+        //console.log('J1 : ' + GameOverJ1);
+        //console.log('J2 : ' + GameOverJ2);
+    }else if (ball.x === 400 && ball.y === 150 && RematchingGame === true) {//reset la valeur quand la balle se trouve en position initiale et quand la valeur rematch est à true.
         RematchingGame = false;
-    }
-}
+        StopVerify = false;
 
-
-/*FONCTION RESTARTAFTERPOINT*/
-
-
-function RestartAfterPoint () {
-    
-    if (PointJ1 === true || PointJ2 === true) {
-        //On met la balle à ses cordonnées de base.
-        ball.x = 400;
-        ball.y = 150;
-        setTimeout(function () {//On reset PointJ1 et PointJ2 après 300 ms.
-            PointJ1 = false;
-            PointJ2 = false;
-        }, 300);
     }
 }
 
@@ -460,16 +485,31 @@ const field = new Field();
 
 //fonction qui exécute les autres fonctions
 draw = function(){
-    window.requestAnimationFrame(draw);
+    window.requestAnimationFrame(draw);//exécute la fonction draw 60 fois par secondes.
+    
+    //vérification de différents états.
+    if(StopVerify !== true){
+        VerifyState();
+    }
+
+    //le fond du canevas
     field.draw();
     rectJ1.drawR();
     rectJ2.drawR();
+
+    //fin de partie
     RematchFunc();
-    RestartAfterPoint();
     GameIsOver();
-    Score();
-    if (GameOverJ1 === false && GameOverJ2 === false && InitiallingGame === true && StoppingGame !== true && PointJ1 === false && PointJ2 === false) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé.
+
+    //arrêt du jeu
+    if (GameOverJ1 === false && GameOverJ2 === false && InitiallingGame === true && StoppingGame !== true && Playing === true) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé ou si la balle est sortie du terrain.
         ball.drawB();
+    }
+
+    //après un arrêt de jeu
+    if(Playing === false && GameOverJ1 !== true && GameOverJ2 !== true){//si playing est à false et que les 2 GameOvers ne soient pas activés.
+        Score();
+        RestartAfterPoint();
     }
 }
 
