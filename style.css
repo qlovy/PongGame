@@ -14,3 +14,10 @@ h1 {
     margin-top: 20px;
     margin-bottom: 80px;
 }
+
+/*le régalge de la vitesse*/
+#speedSetting {
+    position: absolute;
+    top: 70px;
+    left: 40px;
+}

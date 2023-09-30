@@ -22,11 +22,21 @@
     <body onkeydown="KeyPressed(event)"><!--Appelle la fonction quand on appuie sur une touche dans le body-->
         <!--Titre-->
         <h1>The Game Of Pong</h1>
-        <!--Canvas jeu de pong-->
+        <div id="speedSetting">
+            <label for="speed">Choose the speed</label>
+            <select name="speed" id="speed">
+                <option value="0.5">x0.5</option>
+                <option value="1">x1</option>
+                <option value="3">x3</option>
+                <option value="5">x5</option>
+                <option value="10">x10</option>
+            </select>
+        </div>
+        <!--Canvas du jeu de pong-->
         <canvas class="canvas">
             <p>A ball who rebonds between two rectangles with a great sky and stars</p>
         </canvas>
-        <!--Canvas score-->
+        <!--Canvas du score-->
         <canvas class="ScoreCanvas">
             <p>The score of the game</p>
         </canvas>
