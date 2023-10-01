@@ -367,8 +367,8 @@ const ball = new Ball({
     ray: 15,
     StartAngle: 0,
     FinishAngle: 360,
-    VelocityX: 1,
-    VelocityY: 1,
+    VelocityX: speed.value,
+    VelocityY: speed.value,
     color: 'white'
 });
 // le terrain
