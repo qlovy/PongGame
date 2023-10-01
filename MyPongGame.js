@@ -30,22 +30,19 @@ let speed = document.getElementById('speed');
 
 /*LES FONCTIONS SPÉCIFIQUES*/
 
-//fonction qui convertit les angles en radiants
+//convertit les angles en radiants
 const degTorad = function(degrees){
     return degrees * Math.PI / 180;
 }
-
-// fonction qui créer des valeurs aléatoires entre 2 valeurs
+//créer des valeurs aléatoires entre 2 valeurs
 function getRandomNumb (min, max) {
     return Math.random() * (max - min) + min;//peut-être égal au min, mais sera toujours plus petit que le max.
 }
-
-//fonction qui donne le nombre le plus bas en fonction du nombre de départs et de la tolérance
+//donne le nombre le plus bas en fonction du nombre de départs et de la tolérance
 function minNumber (number) {
     return number - tolerance;
 }
-
-//fonction qui donne le nombre le plus haut en fonction du nombre de départs et de la tolérance
+//donne le nombre le plus haut en fonction du nombre de départs et de la tolérance
 function maxNumber (number) {
     return number + tolerance;
 }
@@ -63,9 +60,7 @@ const Ball = function (config) {
     this.VelocityX = config.VelocityX;
     this.VelocityY = config.VelocityY;
 };
-
 //on ajoute la fonction drawB
-
 Ball.prototype.drawB = function() {
     //Dessin de la balle
     ctx.fillStyle = this.color;
@@ -87,9 +82,6 @@ Ball.prototype.drawB = function() {
     //console.log(this.y);
     //console.log(this.x);
 }
-
-// Objet rectangle 
-
 const Rect = function(config) {
     this.x = config.x;
     this.y = config.y;
@@ -97,7 +89,7 @@ const Rect = function(config) {
     this.heightR1 = config.height || 100;
     this.widthR2 = config.widthR2 || 20;
     this.heightR2 = config.heightR2 || 90;
-    // Couleur Stroke
+    // Couleur des lignes
     this.colorS1 = config.colorS || 'rgb(255, 255, 255)';
     this.colorS2 = config.colorS2 || 'rgb(255, 255, 255)';
     // Couleur Rect (Aire)
@@ -105,7 +97,6 @@ const Rect = function(config) {
     this.colorR1 = config.colorR;
     this.colorR2 = config.colorR2 || config.colorR;
 }
-//on ajoute la fonction drawR à l'objet Rect.
 Rect.prototype.drawR = function() {            
     //rectangle bleu (joueur1) ou rouge(joueur2).
     ctx.fillStyle = this.colorR1;
@@ -141,7 +132,7 @@ Star.prototype.draw = function(){
     ctx.arc(this.x, this.y, 3, degTorad(0), degTorad(360), false);
     ctx.fill();
 }
-// Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y.
+//Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y.
 const Field = function() {
     this.stars = [];//Création tableau
     let xStars = [];//tableau pour les cordonnées 'x' des étoiles
