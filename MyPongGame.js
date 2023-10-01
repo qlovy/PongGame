@@ -233,9 +233,9 @@ function Score() {
     }
 }
 
-/*FONCTION RESTARTAFTERPOINT*/
+/*FONCTION restartAfterPoint*/
 
-function RestartAfterPoint () {
+function restartAfterPoint () {
         //On met la balle à ses cordonnées de base.
         ball.x = 400;
         ball.y = 150;
@@ -243,7 +243,7 @@ function RestartAfterPoint () {
 
 /*FONCTION FIN DE PARTIE "GAMEOVER"*/
 
-function GameIsOver () {//Ce qui s'affiche quand la balle touche une des 2 lignes de fonds.
+function gameIsOver () {//Ce qui s'affiche quand la balle touche une des 2 lignes de fonds.
     //Si une des deux variables gameOverJ1 et J2.
     if(gameOverJ1 === true || gameOverJ2 === true) {    
         //fond noir transparent
@@ -324,7 +324,7 @@ RematchButton.addEventListener('click', RematchGame);
 /*FONCTION REMATCH*/
 
 //fonction qui permet de lancer une nouvelle partie après un game over.
-function RematchFunc () {
+function Rematch () {
     //si la variable est activée
     if (rematchingGame === true) {
         //reset les scores des 2 joueurs.
@@ -386,7 +386,7 @@ draw = function(){
     rectJ2.drawR();
     //fin de partie
     RematchFunc();
-    GameIsOver();
+    gameIsOver();
     //arrêt du jeu
     if (gameOverJ1 === false && gameOverJ2 === false && initiallingGame === true && stoppingGame !== true && playing === true) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé ou si la balle est sortie du terrain.
         ball.drawB();
@@ -394,7 +394,7 @@ draw = function(){
     //après un arrêt de jeu
     if(playing === false && gameOverJ1 !== true && gameOverJ2 !== true){//si playing est à false et que les 2 GameOvers ne soient pas activés.
         Score();
-        RestartAfterPoint();
+        restartAfterPoint();
     }
 }
 draw();
