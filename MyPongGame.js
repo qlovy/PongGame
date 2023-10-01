@@ -385,7 +385,7 @@ draw = function(){
     rectJ1.drawR();
     rectJ2.drawR();
     //fin de partie
-    RematchFunc();
+    Rematch();
     gameIsOver();
     //arrêt du jeu
     if (gameOverJ1 === false && gameOverJ2 === false && initiallingGame === true && stoppingGame !== true && playing === true) {//arrête le jeu si un des joueurs est en game over ou alors si le bouton start n'est pas activé ou si le bouton stop est activé ou si la balle est sortie du terrain.
