@@ -51,8 +51,8 @@ function maxNumber(number) {
 }
 
 //Gère la reception de donnée quand on appuie sur une touche.
-function KeyPressed(event) {
-    keyIsPress = event.key;
+function KeyPressed(e) {
+    keyIsPress = e.key;
 }
 
 /*LES OBJETS ET LEURS FONCTIONS*/
@@ -267,16 +267,16 @@ function gameIsOver() {//Ce qui s'affiche quand la balle touche une des 2 lignes
         //texte game over
         //texte noir rempli
         ctx.fillStyle = 'black';
-        ctx.font = 'italic 70px creepster';
+        ctx.font = 'italic 70px sans-serif';
         ctx.fillText('Game Over', 267, 165);
         //texte blanc en ligne
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 1;
-        ctx.font = 'italic 70px creepster';
+        ctx.font = 'italic 70px sans-serif';
         ctx.strokeText('Game Over', 267, 165);
         //texte rouge rempli
         ctx.fillStyle = 'red';
-        ctx.font = 'italic 70px creepster';
+        ctx.font = 'italic 70px sans-serif';
         ctx.fillText('Game Over', 270, 165);
     }
 }

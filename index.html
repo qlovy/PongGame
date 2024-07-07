@@ -1,14 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Animation without processingJS</title>
         <meta charset="utf-8">
         <script src="MyPongGame.js" defer></script>
-        
-        <!--Creepster-->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Creepster&display=swap" rel="stylesheet">
 
         <!--Roboto-->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,18 +14,19 @@
         <link rel="stylesheet" href="style.css">
 
     </head>
-    <body onkeydown="KeyPressed(event)"><!--Appelle la fonction quand on appuie sur une touche dans le body-->
+    <body onkeydown="KeyPressed(e)"><!--Appelle la fonction quand on appuie sur une touche dans le body-->
         <!--Titre-->
         <h1>The Game Of Pong</h1>
         <div id="speedSetting">
-            <label>Choose the speed</label>
-            <select id="speed">
-                <option value="0.5">x0.5</option>
-                <option value="1">x1</option>
-                <option value="3">x3</option>
-                <option value="5">x5</option>
-                <option value="10">x10</option>
-            </select>
+            <label>Choose the speed
+                <select id="speed">
+                    <option value="0.5">x0.5</option>
+                    <option value="1">x1</option>
+                    <option value="3">x3</option>
+                    <option value="5">x5</option>
+                    <option value="10">x10</option>
+                </select>
+            </label>
         </div>
         <!--Canvas du jeu de pong-->
         <canvas class="canvas">
@@ -44,7 +40,7 @@
         <div id="ControlPannel">
         </div>
         <!--Bouton start-->
-        <button type="button"id="StartButton">START</button>
+        <button type="button" id="StartButton">START</button>
         <!--Bouton stop-->
         <button type="button" id="StopButton">STOP</button>
         <!--Bouton relancer le jeu après un game over-->
