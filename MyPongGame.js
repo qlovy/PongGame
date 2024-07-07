@@ -1,6 +1,6 @@
 /*LE CANVAS*/
 
-//PS : si question sur ce genre de chose consulter le doc canvas dans le drive programmation>vscodeproject>canvas.
+//PS : si question sur ce genre de chose consultait le doc canvas dans le drive programmation>vscodeproject>canvas.
 const canvas = document.querySelector(".canvas");
 const width = canvas.width = 800;
 const height = canvas.height = 300;
@@ -31,7 +31,7 @@ let speed = document.getElementById('speed');
 /*LES FONCTIONS SPÉCIFIQUES*/
 
 //convertit les angles en radiants
-const degTorad = function (degrees) {
+const degToRad = function (degrees) {
     return degrees * Math.PI / 180;
 }
 
@@ -50,7 +50,7 @@ function maxNumber(number) {
     return number + tolerance;
 }
 
-//Gère la reception de donnée quand on appuye sur une touche.
+//Gère la reception de donnée quand on appuie sur une touche.
 function KeyPressed(event) {
     keyIsPress = event.key;
 }
@@ -73,7 +73,7 @@ Ball.prototype.drawB = function () {
     //Dessin de la balle
     ctx.fillStyle = this.color;
     ctx.beginPath();
-    ctx.arc(this.x, this.y, this.ray, degTorad(this.StartAngle), degTorad(this.FinishAngle), false);
+    ctx.arc(this.x, this.y, this.ray, degToRad(this.StartAngle), degToRad(this.FinishAngle), false);
     ctx.fill();
     //calcul des rebonds et l'avancée de la balle
     if (this.y >= height - this.ray || this.y <= 0 + this.ray) {//si la balle touche le haut ou le bas du terrain, on inverse la vitesse (donc elle rebondit).
@@ -82,7 +82,7 @@ Ball.prototype.drawB = function () {
     //rebond de la balle si elle touche le rectangle du joueur 1 et 2.
     if ((this.x <= rectJ1.x + rectJ1.widthR1 + this.ray + 1 && this.x >= rectJ1.x + rectJ1.widthR1 + this.ray - 1) && this.y >= rectJ1.y - this.ray && this.y <= (rectJ1.y + rectJ1.heightR1) - this.ray || ((this.x <= rectJ2.x - this.ray + 1 && this.x >= rectJ2.x - this.ray - 1) && (this.y >= (rectJ2.y - this.ray) && this.y <= (rectJ2.y + rectJ2.heightR1) - this.ray))) {
         //Si le x de la balle est presque égal au bord droit du J1 et que le y correspond au bord droit de J1. Le même principe pour J2 mais la reference est le bord gauche. 
-        //le (this.x <= rectJ1.x + rectJ1.widthR1 + this.ray + 0.2 && this.x >= rectJ1.x + rectJ1.widthR1 + this.ray - 0.2) permet d'avoir une sorte de zone de tolérance (min et max), ce qui évite que le x doive être à LA bonne cordonnée pour que la balle rebondisse.
+        //Le (this.x ≤ rectJ1.x + rectJ1.widthR1 + this.ray + 0.2 && this.x >= rectJ1.x + rectJ1.widthR1 + this.ray - 0.2) permet d'avoir une sorte de zone de tolérance (min et max), ce qui évite que le x doive être à LA bonne cordonnée pour que la balle rebondisse.
         this.VelocityX = this.VelocityX * (-1);
     }
     this.x = this.x + this.VelocityX;//on ajoute la valeur de la vitesse à la cordonnée x, donne l'effet d'avancer ou de reculer.
@@ -99,7 +99,7 @@ const Rect = function (config) {
     this.heightR2 = config.heightR2 || 90;
 
     // Couleur des lignes
-    this.colorS1 = config.colorS || 'rgb(255, 255, 255)';
+    this.colorS1 = config.colorS1 || 'rgb(255, 255, 255)';
     this.colorS2 = config.colorS2 || 'rgb(255, 255, 255)';
 
     // Couleur Rect (Aire)
@@ -120,7 +120,7 @@ Rect.prototype.drawR = function () {
     ctx.strokeStyle = this.colorS2;
     ctx.strokeRect(this.x + 5, this.y + 5, this.widthR2, this.heightR2);
 
-    //les mouvements des rectangles commandés par les touches du clavier.
+    //Les mouvements des rectangles commandés par les touches du clavier.
     //Pour le joueur 1
     if (keyIsPress === 'w' && rectJ1.y >= 0) {//si on appuie sur la touche w et que le rectangle n'est pas en haut (y = 0), le rectangle monte.
         rectJ1.y--;
@@ -143,7 +143,7 @@ const Star = function (x, y) {
 Star.prototype.draw = function () {
     ctx.fillStyle = 'rgb(255, 255, 0)';//couleur jaune
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 3, degTorad(0), degTorad(360), false);
+    ctx.arc(this.x, this.y, 3, degToRad(0), degToRad(360), false);
     ctx.fill();
 }
 //Objet qui contient un tableau d'étoile qui contient 120 objets Star avec des cordonnées x et y.
@@ -158,7 +158,7 @@ const Field = function () {
     //boucles qui permettent le tri des valeurs.
     for (let i = 0; i < numberStars; i++) {//fait varier la valeur de référence.
         for (let o = 0; o < numberStars; o++) {//fait varier la valeur comparée.
-            if (i !== o) {//vérifie que i n'est pas égal à o.
+            if (i !== o) {//Vérifie que i n'est pas égal à o.
                 //console.log('le i: ' + i + 'le o: ' + o);//le i et le o (pour comprendre)
                 if (xStars[i] <= maxNumber(xStars[o]) && xStars[i] >= minNumber(xStars[o])) {
                     xStars[o] = -200;
@@ -213,8 +213,8 @@ function VerifyState() {
 
 //définition du canevas
 const ScoreCanvas = document.querySelector('.ScoreCanvas');
-const ScoreWidth = ScoreCanvas.width = 800;
-const ScoreHeight = ScoreCanvas.height = 200;
+ScoreCanvas.width = 800;
+ScoreCanvas.height = 200;
 const Sctx = ScoreCanvas.getContext('2d');
 ScoreCanvas.style.position = 'absolute';
 ScoreCanvas.style.top = 410 + 'px';
@@ -400,8 +400,8 @@ const ball = new Ball({
 const field = new Field();
 //fonction qui exécute les autres fonctions
 draw = function () {
-    window.requestAnimationFrame(draw);//exécute la fonction draw 60 fois par secondes.
-    //vérification de différents états.
+    window.requestAnimationFrame(draw);//Exécute la fonction draw 60 fois par secondes.
+    //Vérification de différents états.
     if (stopVerify !== true) {
         VerifyState();
     }
