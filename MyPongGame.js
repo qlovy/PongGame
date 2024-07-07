@@ -34,18 +34,22 @@ let speed = document.getElementById('speed');
 const degTorad = function (degrees) {
     return degrees * Math.PI / 180;
 }
+
 //créer des valeurs aléatoires entre 2 valeurs
 function getRandomNumb(min, max) {
     return Math.random() * (max - min) + min;//peut-être égal au min, mais sera toujours plus petit que le max.
 }
+
 //donne le nombre le plus bas en fonction du nombre de départs et de la tolérance
 function minNumber(number) {
     return number - tolerance;
 }
+
 //donne le nombre le plus haut en fonction du nombre de départs et de la tolérance
 function maxNumber(number) {
     return number + tolerance;
 }
+
 //Gère la reception de donnée quand on appuye sur une touche.
 function KeyPressed(event) {
     keyIsPress = event.key;
@@ -93,11 +97,11 @@ const Rect = function (config) {
     this.heightR1 = config.height || 100;
     this.widthR2 = config.widthR2 || 20;
     this.heightR2 = config.heightR2 || 90;
-   
+
     // Couleur des lignes
     this.colorS1 = config.colorS || 'rgb(255, 255, 255)';
     this.colorS2 = config.colorS2 || 'rgb(255, 255, 255)';
-    
+
     // Couleur Rect (Aire)
     // colorR doit être écrit lors de la création de l'objet (line 98) et pas colorR1
     this.colorR1 = config.colorR;
@@ -107,15 +111,15 @@ Rect.prototype.drawR = function () {
     //rectangle bleu (joueur1) ou rouge(joueur2).
     ctx.fillStyle = this.colorR1;
     ctx.fillRect(this.x, this.y, this.widthR1, this.heightR1);
-    
+
     //rectangle de ligne en blanc
     ctx.strokeStyle = this.colorS1;
     ctx.strokeRect(this.x, this.y, this.widthR1, this.heightR1);
-    
+
     //rectangle de ligne en blanc plus petit que celui d'avant
     ctx.strokeStyle = this.colorS2;
     ctx.strokeRect(this.x + 5, this.y + 5, this.widthR2, this.heightR2);
-    
+
     //les mouvements des rectangles commandés par les touches du clavier.
     //Pour le joueur 1
     if (keyIsPress === 'w' && rectJ1.y >= 0) {//si on appuie sur la touche w et que le rectangle n'est pas en haut (y = 0), le rectangle monte.
@@ -123,7 +127,7 @@ Rect.prototype.drawR = function () {
     } else if (keyIsPress === 's' && rectJ1.y <= height - rectJ1.heightR1) {//si on appuie sur la touche 's' et que le rectangle n'est pas en bas (y = 200), le rectangle descend.
         rectJ1.y++;
     }
-    
+
     //Pour le joueur 2
     if (keyIsPress === 'ArrowUp' && rectJ2.y >= 0) {//si on appuie sur la flèche du haut et que le rectangle n'est pas en haut (y = 0), le rectangle monte.
         rectJ2.y--;
@@ -215,6 +219,7 @@ const Sctx = ScoreCanvas.getContext('2d');
 ScoreCanvas.style.position = 'absolute';
 ScoreCanvas.style.top = 410 + 'px';
 ScoreCanvas.style.left = 20 + 'px';
+
 function Score() {
     if (execute !== false) {//si execute n'est strictement pas égal à false, le code s'exécute.
         if (ball.x <= 0 + ball.ray) {//si la balle est à gauche
@@ -367,6 +372,7 @@ function Rematch() {
         stopVerify = false;
     }
 }
+
 //rectangle joueur 1
 const rectJ1 = new Rect({
     x: 20,
