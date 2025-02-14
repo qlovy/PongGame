@@ -26,7 +26,7 @@ let scoreJ2 = 0;//le score de J2
 let playing = true;//si le jeu est actif.
 let execute = true;//décide de l'exécution d'une fonction
 let stopVerify = false;//arrête la fonction verifystate.
-let speed = document.getElementById('speed');
+//let speed = document.getElementById('speed');
 
 /*LES FONCTIONS SPÉCIFIQUES*/
 
@@ -392,8 +392,8 @@ const ball = new Ball({
     ray: 15,
     StartAngle: 0,
     FinishAngle: 360,
-    VelocityX: speed.value,
-    VelocityY: speed.value,
+    VelocityX: 0.5,//speed.value,
+    VelocityY: 0.5,//speed.value,
     color: 'white'
 });
 // le terrain

@@ -21,3 +21,17 @@ h1 {
     top: 70px;
     left: 40px;
 }
+
+.rules {
+    color: white;
+    font-family: Monserrat, sans-serif;
+    margin-left: 30px;
+}
+
+h2.rules {
+    margin-top: 200px;
+}
+
+p.rules {
+    font-size: 20px;
+}
